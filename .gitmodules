@@ -1,0 +1,6 @@
+[submodule "kernel"]
+	path = kernel
+	url = https://github.com/merizo-labs/kernel
+[submodule "bootloader"]
+	path = bootloader
+	url = https://github.com/merizo-labs/bootloader
