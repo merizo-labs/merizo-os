@@ -4,7 +4,7 @@ import sys
 
 def build_bootloader(r: bool):
     if not r:
-        process = os.popen("cd bootloader && cargo clean")
+        process = os.popen("cd bootloader && cargo build")
     else: 
         process = os.popen("cd bootloader && cargo build --release")
     output = process.read()
