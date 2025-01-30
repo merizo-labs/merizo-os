@@ -24,6 +24,25 @@ def build_kernel(r: bool):
     process.close()
     print(output)
 
+def prepare_iso_dir():
+    os.system("mkdir -p iso/EFI/BOOT")
+    os.system("cp images/merizo-bootloader.efi iso/EFI/BOOT/BOOTX64.EFI")
+    os.system("cp images/merizo-kernel.elf iso/merizo-kernel.elf")
+def form_iso():
+    os.system("mkdir -p images/iso")
+    process = os.popen("xorriso -as mkisofs -R \
+  -J \
+  -V 'MERIZO_OS' \
+  -e EFI/BOOT/BOOTX64.EFI \
+  -no-emul-boot \
+  -append_partition 2 0xef iso/EFI/BOOT/BOOTX64.EFI \
+  -o images/iso/merizo.iso \
+  iso/")
+    output = process.read()
+    process.close()
+    print(output)
+    
+
 def build(r: bool):
     build_bootloader(r)
     build_kernel(r)
@@ -31,3 +50,8 @@ def build(r: bool):
     
 release_flag = "--release" in sys.argv
 build(release_flag)
+
+create_iso = "--iso" in sys.argv
+if create_iso:
+    prepare_iso_dir()
+    form_iso()
