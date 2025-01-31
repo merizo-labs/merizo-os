@@ -33,7 +33,7 @@ def form_iso():
     process = os.popen("xorriso -as mkisofs -R \
   -J \
   -V 'MERIZO_OS' \
-  -e EFI/BOOT/BOOTX64.EFI \
+  -b EFI/BOOT/BOOTX64.EFI \
   -no-emul-boot \
   -append_partition 2 0xef iso/EFI/BOOT/BOOTX64.EFI \
   -o images/iso/merizo.iso \
@@ -41,7 +41,8 @@ def form_iso():
     output = process.read()
     process.close()
     print(output)
-    
+def clear_iso_support_files():
+    os.system("rm -rf iso")
 
 def build(r: bool):
     build_bootloader(r)
@@ -55,3 +56,5 @@ create_iso = "--iso" in sys.argv
 if create_iso:
     prepare_iso_dir()
     form_iso()
+    clear_iso_support_files()
+print("Build complete")
